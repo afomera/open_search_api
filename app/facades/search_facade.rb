@@ -6,11 +6,11 @@ class SearchFacade
   end
 
   # Public: previous_searches
-  # Returns an array of unique queries that were previously searched.
+  # Returns an AR collection of previously searched terms.
   # These are displayed on the sidebar to provide clickable links for viewing
   # previously searched terms by users.
   def previous_searches
-    Search.filter_query(params[:filter_by]).uniq
+    SearchTerm.filter_query(params[:filter_by])
   end
 
   # Public: search_activity
@@ -18,7 +18,7 @@ class SearchFacade
   # search times when viewing search results.
   # Limited to only select the created_at for performance reasons.
   def search_activity
-    Search.where(query: params[:search]).select(:created_at)
+    Search.where(search_term: search_term).select(:created_at)
   end
 
   # Public: results
@@ -33,5 +33,9 @@ class SearchFacade
 
   def query_params
     { search: params[:search] }
+  end
+
+  def search_term
+    SearchTerm.find_by_query(params[:search])
   end
 end

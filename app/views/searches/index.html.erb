@@ -9,7 +9,7 @@
 <div class="row">
   <div class="col-md-3">
   <%= form_tag(searches_path, method: :post) do |f| %>
-    <%= text_field_tag :search, params[:search] %>
+    <%= text_field_tag :search, params[:search], placeholder: 'Try: mars' %>
     <%= select_tag "filter_by",
       options_for_search_history_filter(params[:filter_by]),
       prompt: "Filter History" %>
@@ -17,23 +17,24 @@
   <% end %>
 
     <h4>Previous Searches:</h4>
-    <% @facade.previous_searches.each do |key, value| %>
+    <% @facade.previous_searches.each do |term| %>
       <li>
-        [<%= value %>] <%= link_to key, searches_path(search: key,
+        [<%= term.searches_count %>]
+        <%= link_to term.query, searches_path(search: term.query,
           filter_by: params[:filter_by]) %>
       </li>
+    <% end %>
+
+    <hr />
+    <% if @facade.search_activity.any? %>
+      <h5>Previous Searches for <%= params[:search] %></h5>
+      <% @facade.search_activity.each do |search| %>
+        <%= search.created_at %><br />
+      <% end %>
     <% end %>
   </div>
   <div class="col-md-9">
     <% if @facade.results.present? %>
-      <% if @facade.search_activity.any? %>
-        <h5>Previous Searches for <%= params[:search] %></h5>
-        <% @facade.search_activity.each do |search| %>
-          <%= search.created_at %><br />
-        <% end %>
-      <% end %>
-
-      <hr />
       Rendering Results:
       <%= @facade.results %>
     <% else %>
