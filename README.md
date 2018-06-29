@@ -1,5 +1,7 @@
 # Nasa Image API Search
 
+Hosted on Heroku: [https://powerful-ocean-19109.herokuapp.com/](https://powerful-ocean-19109.herokuapp.com/)
+
 Tracks Searches to the Nasa Images API.
 
 * Records a count of each unique search term
@@ -9,6 +11,8 @@ Tracks Searches to the Nasa Images API.
 * Viewing a search result will show times it was previously searched.
 * Returns and displays JSON currently, but in the future, this could be wrapped
   and parsed to display the different media types the API supports with more time.
+
+* Pagination was _not_ considered at this time, but will need to be addressed in the future.
 
 ## Setup
 
@@ -43,5 +47,4 @@ cases, where I wanted to return results and still log the search without making 
 links be a different type of method than GET.
 
 **SearchTerm currently has no database constraints for uniqueness for query.**
-
 This is currently handled via a model validation.
