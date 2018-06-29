@@ -22,6 +22,14 @@
   </div>
   <div class="col-md-9">
     <% if @results.present? %>
+      <% if @search_activity.any? %>
+        <h5>Previous Searches for <%= params[:search] %></h5>
+        <% @search_activity.each do |search| %>
+          Searched On: <%= search.created_at %><br / />
+        <% end %>
+      <% end %>
+
+      <hr />
       Rendering Results:
       <%= @results %>
     <% else %>
