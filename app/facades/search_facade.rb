@@ -6,13 +6,11 @@ class SearchFacade
   end
 
   # Public: previous_searches
-  # Returns an AR collection of unique queries that were previously searched.
+  # Returns an array of unique queries that were previously searched.
   # These are displayed on the sidebar to provide clickable links for viewing
   # previously searched terms by users.
-  #
-  # TODO: Needs filtering ability
   def previous_searches
-    Search.filter(params[:filter_by])
+    Search.filter(params[:filter_by]).uniq
   end
 
   # Public: search_activity

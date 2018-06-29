@@ -1,24 +1,24 @@
 class Search < ApplicationRecord
   validates :query, presence: true
 
-  VALID_FILTERS = ['order-desc', 'order-asc', 'count'].freeze
-  # Scope to filter past searches
+  # Scope to filter past search history
   def self.filter(filter_by)
     if filter_by.present?
       case filter_by
       when 'order-asc'
-        order(created_at: :asc)
+        order(created_at: :asc).map(&:query)
       when 'order-desc'
-        order(created_at: :desc)
+        order(created_at: :desc).map(&:query)
       when 'count'
-        none
-       #  group('query')
-       # .order('count_query asc').count('count_query')
+        # Returns a sorted array based off the highest count of searches for the
+        # given query. Then we do some ruby magic, to order it by highest number
+        # then pluck the 'query' from the array that includes the frequency count
+        group(:query).count.sort_by(&:last).reverse.map(&:shift)
       else
         none # They probably put something that didn't match our filter params
       end
     else
-      all
+      all.map(&:query)
     end
   end
 end
