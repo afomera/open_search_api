@@ -17,9 +17,9 @@
   <% end %>
 
     <h4>Previous Searches:</h4>
-    <% @facade.previous_searches.each do |query| %>
+    <% @facade.previous_searches.each do |key, value| %>
       <li>
-        <%= link_to query, searches_path(search: query,
+        [<%= value %>] <%= link_to key, searches_path(search: key,
           filter_by: params[:filter_by]) %>
       </li>
     <% end %>

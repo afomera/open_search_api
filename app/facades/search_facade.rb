@@ -10,7 +10,7 @@ class SearchFacade
   # These are displayed on the sidebar to provide clickable links for viewing
   # previously searched terms by users.
   def previous_searches
-    Search.filter(params[:filter_by]).uniq
+    Search.filter_query(params[:filter_by]).uniq
   end
 
   # Public: search_activity

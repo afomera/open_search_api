@@ -2,23 +2,26 @@ class Search < ApplicationRecord
   validates :query, presence: true
 
   # Scope to filter past search history
-  def self.filter(filter_by)
+  def self.filter_query(filter_by)
     if filter_by.present?
+      # In many cases, we're doing each_with_object to provide us with a better
+      # array to work with that includes the frequency of each query_param
       case filter_by
       when 'order-asc'
-        order(created_at: :asc).map(&:query)
+        order(created_at: :asc).pluck(:query).each_with_object({}) do |str, hash|
+          hash[str] ||= 0; hash[str] += 1
+        end
       when 'order-desc'
-        order(created_at: :desc).map(&:query)
+        order(created_at: :desc).pluck(:query).each_with_object({}) do |str, hash|
+          hash[str] ||= 0; hash[str] += 1
+        end
       when 'count'
-        # Returns a sorted array based off the highest count of searches for the
-        # given query. Then we do some ruby magic, to order it by highest number
-        # then pluck the 'query' from the array that includes the frequency count
-        group(:query).count.sort_by(&:last).reverse.map(&:shift)
+        group(:query).count.sort_by {|_key, value| value}.reverse
       else
         none # They probably put something that didn't match our filter params
       end
     else
-      all.map(&:query)
+      all.group(:query).count.sort_by {|_key, value| value}
     end
   end
 end
