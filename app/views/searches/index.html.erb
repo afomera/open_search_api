@@ -33,10 +33,14 @@
       <% end %>
     <% end %>
   </div>
+
   <div class="col-md-9">
     <% if @facade.results.present? %>
-      Rendering Results:
-      <%= @facade.results %>
+      <div class="card card-body">
+        <!-- A followup thing I would do here is
+         actually render the results after parsing it -->
+        <%= @facade.results %>
+      </div>
     <% else %>
       No results found, try searching :)
     <% end  %>
