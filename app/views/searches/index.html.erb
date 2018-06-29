@@ -4,19 +4,23 @@
   Enter in your search param to search the Nasa Images API
 </p>
 
-<%= form_tag(searches_path, method: :post) do |f| %>
-  <%= text_field_tag :search, params[:search] %>
-  <%= submit_tag "Search" %>
-<% end %>
-
 <hr>
 
 <div class="row">
   <div class="col-md-3">
+  <%= form_tag(searches_path, method: :post) do |f| %>
+    <%= text_field_tag :search, params[:search] %>
+    <%= select_tag "filter_by",
+      options_for_search_history_filter(params[:filter_by]),
+      prompt: "Filter History" %>
+    <%= submit_tag "Search" %>
+  <% end %>
+
     <h4>Previous Searches:</h4>
     <% @facade.previous_searches.each do |search| %>
       <li>
-        <%= link_to search.query, searches_path(search: search.query) %>
+        <%= link_to search.query, searches_path(search: search.query,
+          filter_by: params[:filter_by]) %>
       </li>
     <% end %>
   </div>
@@ -25,7 +29,7 @@
       <% if @facade.search_activity.any? %>
         <h5>Previous Searches for <%= params[:search] %></h5>
         <% @facade.search_activity.each do |search| %>
-          Searched On: <%= search.created_at %><br / />
+          <%= search.created_at %><br />
         <% end %>
       <% end %>
 
