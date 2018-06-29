@@ -14,24 +14,24 @@
 <div class="row">
   <div class="col-md-3">
     <h4>Previous Searches:</h4>
-    <% @previous_searches.each do |search| %>
+    <% @facade.previous_searches.each do |search| %>
       <li>
         <%= link_to search.query, searches_path(search: search.query) %>
       </li>
     <% end %>
   </div>
   <div class="col-md-9">
-    <% if @results.present? %>
-      <% if @search_activity.any? %>
+    <% if @facade.results.present? %>
+      <% if @facade.search_activity.any? %>
         <h5>Previous Searches for <%= params[:search] %></h5>
-        <% @search_activity.each do |search| %>
+        <% @facade.search_activity.each do |search| %>
           Searched On: <%= search.created_at %><br / />
         <% end %>
       <% end %>
 
       <hr />
       Rendering Results:
-      <%= @results %>
+      <%= @facade.results %>
     <% else %>
       No results found, try searching :)
     <% end  %>
