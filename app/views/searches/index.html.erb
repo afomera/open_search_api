@@ -1,0 +1,31 @@
+<h2>Search NASA.gov Images</h2>
+
+<p>
+  Enter in your search param to search the Nasa Images API
+</p>
+
+<%= form_tag(searches_path, method: :post) do |f| %>
+  <%= text_field_tag :search, params[:search] %>
+  <%= submit_tag "Search" %>
+<% end %>
+
+<hr>
+
+<div class="row">
+  <div class="col-md-3">
+    <h4>Previous Searches:</h4>
+    <% @previous_searches.each do |search| %>
+      <li>
+        <%= link_to search.query, searches_path(search: search.query) %>
+      </li>
+    <% end %>
+  </div>
+  <div class="col-md-9">
+    <% if @results.present? %>
+      Rendering Results:
+      <%= @results %>
+    <% else %>
+      No results found, try searching :)
+    <% end  %>
+  </div>
+</div>
